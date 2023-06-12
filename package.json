@@ -4,7 +4,9 @@
   "repository": {},
   "license": "UNLICENSED",
   "version": "1.0.0",
-  "main": "server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
   "dependencies": {
     "express-gateway": "^1.16.11"
   }

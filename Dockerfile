@@ -2,7 +2,8 @@
 FROM node:carbon
 
 # Set the working directory in the container
-WORKDIR /api-gateway
+# We will monitor live reload changes in this directory.
+WORKDIR /hopcloud-gateway
 
 # Copy package.json and package-lock.json to the container
 COPY package*.json ./
@@ -17,4 +18,4 @@ COPY . .
 EXPOSE 8080
 
 # Start the API gateway
-CMD ["npm", "start"]
+CMD ["npx","nodemon", "start"]
