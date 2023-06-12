@@ -6,7 +6,7 @@ db:
 
 #plugins:
   # express-gateway-plugin-example:
-  #   param1: 'param from system.config' 
+  #   param1: 'param from system.config'
 
 crypto:
   cipherKey: sensitiveKey
@@ -19,6 +19,11 @@ session:
   resave: false
   saveUninitialized: false
 accessTokens:
+  tokenType: 'jwt'
+  issuer: 'hopcloud-gateway'
+  audience: 'client'
+  subject: 'NovaGems Marketplace'
+  secretOrPublicKeyFile: 'config/public.pem'
   timeToExpiry: 7200000
 refreshTokens:
   timeToExpiry: 7200000

@@ -6,10 +6,12 @@ admin:
 apiEndpoints:
   api:
     host: localhost
-    paths: '/ip'
+    paths: '*/**'
 serviceEndpoints:
   httpbin:
     url: 'https://httpbin.org'
+  googleService:
+    url: 'https://www.google.com'
 policies:
   - basic-auth
   - cors
@@ -19,14 +21,45 @@ policies:
   - oauth2
   - proxy
   - rate-limit
+  - jwt
+  - request-transformer
 pipelines:
   default:
     apiEndpoints:
       - api
     policies:
-    # Uncomment `key-auth:` when instructed to in the Getting Started guide.
-    # - key-auth:
+
+      - rate-limit:
+          - action:
+              max: 5
+              windowMs: 6000
+              rateLimitBy: "${req.ip}"
+              statusCode: 429
+              message: "Exceeded request limit"
+              delayAfter: 0
+              delayMs: 0
+              headers: true
+      - request-transformer:
+          action:
+            headers:
+              add:
+                X-User-Id: req.hostname
+      - log:
+          action:
+            message: 'Method ${req.method}\nHeaders: ${req.headers["X-User-Id"]}'
+      - jwt:
+          - action:
+              secretOrPublicKeyFile: config/public.pem
+              checkCredentialExistence: false
+      - request-transformer:
+          action:
+            headers:
+              add:
+                username: req.user.username
+      - log:
+          action:
+            message: 'User ${req.user.username}'
       - proxy:
           - action:
-              serviceEndpoint: httpbin 
+              serviceEndpoint: googleService
               changeOrigin: true
