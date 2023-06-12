@@ -39,6 +39,24 @@ Build the Docker image:
 
 5. Access the HopCloud API gateway at http://localhost:8080.
 
+## Kubernetes
+
+# Start minikube
+minikube start
+
+# Set docker env
+eval $(minikube docker-env)             # unix shells
+minikube docker-env | Invoke-Expression # PowerShell
+
+# Build image
+docker build -t foo:0.0.1 .
+
+# Run in minikube
+kubectl run hello-foo --image=foo:0.0.1 --image-pull-policy=Never
+
+# Check that it's running
+kubectl get pods
+
 ## Usage
 Once HopCloud is up and running, you can start utilizing its features:
 

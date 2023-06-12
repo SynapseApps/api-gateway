@@ -4,6 +4,7 @@
   "repository": {},
   "license": "UNLICENSED",
   "version": "1.0.0",
+  "type": "commonjs",
   "scripts": {
     "start": "node src/server.js"
   },
